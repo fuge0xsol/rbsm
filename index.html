@@ -250,7 +250,8 @@ tbody tr:hover{background:oklch(20% .02 150 / .12)}
 let allTokens = [];
 let allWallets = [];
 const API_HOST = "https://openapi.gmgn.ai";
-let API_KEY = localStorage.getItem("gmgn_api_key") || "";
+let API_KEY = "";
+try { API_KEY = localStorage.getItem("gmgn_api_key") || ""; } catch(e) { API_KEY = ""; }
 
 // ─── Utils ───
 const $ = id => document.getElementById(id);
@@ -302,7 +303,7 @@ $("saveApiKeyBtn").onclick = () => {
   const v = $("apiKeyInput").value.trim();
   if (!v) { alert("请输入 API Key"); return; }
   API_KEY = v;
-  localStorage.setItem("gmgn_api_key", v);
+  try { localStorage.setItem("gmgn_api_key", v); } catch(e) {}
   updateApiKeyStatus();
   loadStats();
 };

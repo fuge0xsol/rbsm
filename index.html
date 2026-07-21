@@ -250,7 +250,7 @@ tbody tr:hover{background:rgba(40,80,60,.12)}
 let allTokens = [];
 let allWallets = [];
 const API_HOST = "https://openapi.gmgn.ai";
-let API_KEY = "gmgn_8abb46916b36763aa5c3f98d66d1c778";
+let API_KEY = "";
 try { const saved = localStorage.getItem("gmgn_api_key"); if (saved) API_KEY = saved; } catch(e) {}
 
 // ─── Utils ───
@@ -538,7 +538,18 @@ document.querySelectorAll(".modal-overlay").forEach(o => {
 
 // ─── Init ───
 updateApiKeyStatus();
-if (API_KEY) { loadStats(); loadTokens(); }
+if (API_KEY) {
+  loadStats();
+  loadTokens();
+} else {
+  // 首次访问自动聚焦到 API Key 输入框
+  setTimeout(() => {
+    const inp = $("apiKeyInput");
+    if (inp) inp.focus();
+    $("loadingBar").innerHTML = '<div class="loading-text" style="padding:20px;text-align:center;">请先输入你的 GMGN API Key 开始使用</div>';
+    $("loadingBar").classList.add("active");
+  }, 200);
+}
 
 </script>
 </body>

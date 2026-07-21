@@ -257,7 +257,8 @@ try { const saved = localStorage.getItem("gmgn_api_key"); if (saved) API_KEY = s
 const $ = id => document.getElementById(id);
 const fmtUSD = n => { n = Number(n)||0; const a = Math.abs(n); if (a >= 1e9) return "$" + (n/1e9).toFixed(2) + "B"; if (a >= 1e6) return "$" + (n/1e6).toFixed(2) + "M"; if (a >= 1e3) return "$" + (n/1e3).toFixed(1) + "K"; return "$" + n.toFixed(4); };
 const fmtPct = n => { n = Number(n)||0; return (n>=0?"+":"")+n.toFixed(2)+"%"; };
-const fmtAddr = a => a ? a.slice(0,8)+"..."+a.slice(-6) : "?";
+const fmtAddr = a => a ? a : "?";
+const fmtAddrShort = a => a ? a.slice(0,8)+"..."+a.slice(-6) : "?";
 const fmtNum = n => n ? Number(n).toLocaleString() : "0";
 const showLoading = () => $("loadingBar").classList.add("active");
 const hideLoading = () => $("loadingBar").classList.remove("active");
@@ -465,7 +466,7 @@ function renderWallets() {
 async function showWalletDetail(addr) {
   $("walletModal").classList.add("active");
   $("walletModalBody").innerHTML = '<div class="empty"><span class="spinner"></span> 加载中…</div>';
-  $("walletModalTitle").textContent = fmtAddr(addr) + " · 钱包详情";
+  $("walletModalTitle").textContent = addr + " · 钱包详情";
   try {
     const [statsRes] = await Promise.all([
       gmgnGet("/v1/user/wallet_stats", { wallet_address: addr, period: "30d" })

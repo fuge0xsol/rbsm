@@ -42,7 +42,7 @@ body{color:var(--ink);font-family:var(--sans);
     linear-gradient(90deg,oklch(100% 0 0 / .035) 1px,transparent 1px),
     linear-gradient(0deg,oklch(100% 0 0 / .028) 1px,transparent 1px),var(--bg);
   background-size:auto,80px 80px,80px 80px,auto;padding:0 28px 74px}
-body:after{content:"SMART MONEY \u25cf ROBINHOOD CHAIN \u25cf TOP TRADERS \u25cf EARLY BUYERS \u25cf LIVE";
+body:after{content:"SMART MONEY \25cf ROBINHOOD CHAIN \25cf TOP TRADERS \25cf EARLY BUYERS \25cf LIVE";
   position:fixed;left:0;right:0;bottom:0;z-index:20;height:46px;
   display:flex;align-items:center;padding:0 28px;border-top:1px solid var(--line);
   background:oklch(8% .01 200 / .96);color:var(--acid);
@@ -514,7 +514,7 @@ $("themeToggle").onclick = () => {
   const cur = document.documentElement.getAttribute("data-theme");
   const next = cur === "dark" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", next);
-  $("themeToggle").textContent = next === "dark" ? "\u2600 \u4eae\u8272" : "\U0001f319 \u6697\u8272";
+  $("themeToggle").textContent = next === "dark" ? "\u2600 \u4eae\u8272" : "\uD83C\uDF19 \u6697\u8272";
 };
 
 // ─── Tabs ───

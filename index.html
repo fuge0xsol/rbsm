@@ -314,7 +314,7 @@ async function loadStats() {
   if (!API_KEY) return;
   try {
     const data = await gmgnGet("/v1/market/rank", { interval: "24h", limit: 100 });
-    const tokens = data?.data?.rank || [];
+    const tokens = data?.data?.data?.rank || data?.data?.rank || [];
     const over1m = tokens.filter(t => (t.history_highest_market_cap||0) >= 1e6);
     const totalVol = tokens.reduce((s,t) => s + (t.volume||0), 0);
     $("statTokens").textContent = over1m.length;
@@ -331,7 +331,7 @@ async function loadTokens() {
   showLoading();
   try {
     const data = await gmgnGet("/v1/market/rank", { interval: "24h", limit: 100 });
-    allTokens = data?.data?.rank || [];
+    allTokens = data?.data?.data?.rank || data?.data?.rank || [];
     renderTokens();
   } catch(e) {
     $("tokenBody").innerHTML = '<tr><td colspan="12"><div class="empty">加载失败: '+e.message+'</div></td></tr>';
@@ -369,8 +369,8 @@ async function showTokenDetail(addr) {
     ]);
     const info = infoRes?.data || {};
     const sec = secRes?.data || {};
-    const traders = tradersRes?.data?.list || tradersRes?.list || [];
-    const holders = holdersRes?.data?.rank || holdersRes?.rank || holdersRes?.data?.list || [];
+    const traders = tradersRes?.data?.data?.list || tradersRes?.data?.list || tradersRes?.list || [];
+    const holders = holdersRes?.data?.data?.rank || holdersRes?.data?.rank || holdersRes?.data?.list || holdersRes?.rank || [];
     $("tokenModalTitle").textContent = (info.symbol || "?") + " · 代币详情";
     let html = '<div class="section-title">基本信息</div>';
     html += '<table><tbody><tr><td>名称</td><td>'+(info.name||"?")+'</td><td>价格</td><td>$'+(info.price||0).toFixed(8)+'</td></tr><tr><td>市值</td><td>'+fmtUSD(info.market_cap||0)+'</td><td>流动性</td><td>'+fmtUSD(info.liquidity||0)+'</td></tr><tr><td>持有人</td><td>'+fmtNum(info.holder_count)+'</td><td>24h交易额</td><td>'+fmtUSD(info.volume||0)+'</td></tr></tbody></table>';
@@ -408,12 +408,12 @@ async function loadSmartWallets() {
   showLoading();
   try {
     const data = await gmgnGet("/v1/market/rank", { interval: "24h", limit: 30 });
-    const tokens = (data?.data?.rank || []).filter(t => (t.history_highest_market_cap||0) >= 1e6);
+    const tokens = (data?.data?.data?.rank || data?.data?.rank || []).filter(t => (t.history_highest_market_cap||0) >= 1e6);
     const smartWallets = {};
     for (const token of tokens.slice(0, 20)) {
       try {
         const tdata = await gmgnGet("/v1/market/token_top_traders", { address: token.address, limit: 10, order_by: "profit", direction: "desc" });
-        const traders = tdata?.data?.list || tdata?.list || [];
+        const traders = tdata?.data?.data?.list || tdata?.data?.list || tdata?.list || [];
         for (const t of traders) {
           const waddr = t.address;
           if (!waddr) continue;

@@ -255,15 +255,8 @@ try { const saved = localStorage.getItem("gmgn_api_key"); if (saved) API_KEY = s
 
 // ─── Utils ───
 const $ = id => document.getElementById(id);
-const fmtUSD = n => {
-  if (!n || n === 0) return "$0";
-  const a = Math.abs(n);
-  if (a >= 1e9) return "$" + (n/1e9).toFixed(2) + "B";
-  if (a >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
-  if (a >= 1e3) return "$" + (n/1e3).toFixed(1) + "K";
-  return "$" + n.toFixed(4);
-};
-const fmtPct = n => { if (n===null||n===undefined) return "--"; return (n>=0?"+":"")+n.toFixed(2)+"%"; };
+const fmtUSD = n => { n = Number(n)||0; const a = Math.abs(n); if (a >= 1e9) return "$" + (n/1e9).toFixed(2) + "B"; if (a >= 1e6) return "$" + (n/1e6).toFixed(2) + "M"; if (a >= 1e3) return "$" + (n/1e3).toFixed(1) + "K"; return "$" + n.toFixed(4); };
+const fmtPct = n => { n = Number(n)||0; return (n>=0?"+":"")+n.toFixed(2)+"%"; };
 const fmtAddr = a => a ? a.slice(0,8)+"..."+a.slice(-6) : "?";
 const fmtNum = n => n ? Number(n).toLocaleString() : "0";
 const showLoading = () => $("loadingBar").classList.add("active");
@@ -352,7 +345,7 @@ function renderTokens() {
     const sm = t.smart_degen_count || 0;
     const kol = t.renowned_count || 0;
     const lp = t.launchpad_platform || t.launchpad || "?";
-    return '<tr><td class="dim">'+(i+1)+'</td><td><span class="tok-sym">'+(t.symbol||"?")+'</span><br><span class="tok-name">'+(t.name||"")+'</span></td><td>$'+(t.price||0).toFixed(6)+'</td><td class="'+chgClass+'">'+fmtPct(chg)+'</td><td>'+fmtUSD(t.volume||0)+'</td><td>'+fmtUSD(t.market_cap||0)+'</td><td>'+fmtUSD(t.history_highest_market_cap||0)+'</td><td>'+fmtNum(t.holder_count)+'</td><td>'+(sm>0?'<span class="badge badge-cyan">'+sm+'</span>':'<span class="dim">0</span>')+'</td><td>'+(kol>0?'<span class="badge badge-purple">'+kol+'</span>':'<span class="dim">0</span>')+'</td><td><span class="badge badge-amber">'+lp+'</span></td><td><button class="btn mini" onclick="showTokenDetail(\''+t.address+'\')">查看</button></td></tr>';
+    return '<tr><td class="dim">'+(i+1)+'</td><td><span class="tok-sym">'+(t.symbol||"?")+'</span><br><span class="tok-name">'+(t.name||"")+'</span></td><td>$'+Number(t.price||0).toFixed(6)+'</td><td class="'+chgClass+'">'+fmtPct(chg)+'</td><td>'+fmtUSD(t.volume||0)+'</td><td>'+fmtUSD(t.market_cap||0)+'</td><td>'+fmtUSD(t.history_highest_market_cap||0)+'</td><td>'+fmtNum(t.holder_count)+'</td><td>'+(sm>0?'<span class="badge badge-cyan">'+sm+'</span>':'<span class="dim">0</span>')+'</td><td>'+(kol>0?'<span class="badge badge-purple">'+kol+'</span>':'<span class="dim">0</span>')+'</td><td><span class="badge badge-amber">'+lp+'</span></td><td><button class="btn mini" onclick="showTokenDetail(\''+t.address+'\')">查看</button></td></tr>';
   }).join("");
 }
 
@@ -373,7 +366,7 @@ async function showTokenDetail(addr) {
     const holders = holdersRes?.data?.data?.rank || holdersRes?.data?.rank || holdersRes?.data?.list || holdersRes?.rank || [];
     $("tokenModalTitle").textContent = (info.symbol || "?") + " · 代币详情";
     let html = '<div class="section-title">基本信息</div>';
-    html += '<table><tbody><tr><td>名称</td><td>'+(info.name||"?")+'</td><td>价格</td><td>$'+(info.price||0).toFixed(8)+'</td></tr><tr><td>市值</td><td>'+fmtUSD(info.market_cap||0)+'</td><td>流动性</td><td>'+fmtUSD(info.liquidity||0)+'</td></tr><tr><td>持有人</td><td>'+fmtNum(info.holder_count)+'</td><td>24h交易额</td><td>'+fmtUSD(info.volume||0)+'</td></tr></tbody></table>';
+    html += '<table><tbody><tr><td>名称</td><td>'+(info.name||"?")+'</td><td>价格</td><td>$'+Number(info.price||0).toFixed(8)+'</td></tr><tr><td>市值</td><td>'+fmtUSD(info.market_cap||0)+'</td><td>流动性</td><td>'+fmtUSD(info.liquidity||0)+'</td></tr><tr><td>持有人</td><td>'+fmtNum(info.holder_count)+'</td><td>24h交易额</td><td>'+fmtUSD(info.volume||0)+'</td></tr></tbody></table>';
     html += '<div class="section-title">安全检查</div>';
     const hp = sec.is_honeypot;
     const rn = sec.is_renounced || sec.owner_renounced;

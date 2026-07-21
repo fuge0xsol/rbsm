@@ -273,10 +273,11 @@ const hideLoading = () => $("loadingBar").classList.remove("active");
 async function gmgnGet(path, params={}) {
   if (!API_KEY) throw new Error("请先设置 GMGN API Key");
   const ts = Math.floor(Date.now()/1000);
+  const cid = crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2));
   const url = new URL(API_HOST + path);
   url.searchParams.set("chain","robinhood");
   url.searchParams.set("timestamp", ts);
-  url.searchParams.set("client_id", "rbsm_web");
+  url.searchParams.set("client_id", cid);
   for (const [k,v] of Object.entries(params)) {
     if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
   }

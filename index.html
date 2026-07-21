@@ -106,7 +106,7 @@ thead{background:rgba(8,10,12,.5)}
 th{padding:12px 14px;text-align:left;font-weight:900;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;font-size:11px;white-space:nowrap;border-bottom:1px solid var(--line)}
 td{padding:10px 14px;border-bottom:1px solid rgba(40,44,48,.5);white-space:nowrap;color:var(--ink)}
 tbody tr:hover{background:rgba(40,80,60,.12)}
-.tok-sym{font-weight:900;color:var(--ink-strong)}.tok-name{color:var(--muted);font-size:12px}
+.tok-sym{font-weight:900;color:var(--ink-strong)}.tok-name{color:var(--muted);font-size:12px}.copy-addr{cursor:pointer;transition:color .15s}.copy-addr:hover{color:#00ff88}
 .badge{display:inline-block;padding:2px 8px;font-size:11px;font-weight:900;letter-spacing:.04em;border:1px solid}
 .badge-cyan{border-color:var(--cyan);color:var(--cyan)}.badge-purple{border-color:var(--purple);color:var(--purple)}
 .badge-green{border-color:var(--acid);color:var(--acid)}.badge-red{border-color:var(--red);color:var(--red)}
@@ -260,6 +260,7 @@ const fmtPct = n => { n = Number(n)||0; return (n>=0?"+":"")+n.toFixed(2)+"%"; }
 const fmtAddr = a => a ? a : "?";
 const fmtAddrShort = a => a ? a.slice(0,8)+"..."+a.slice(-6) : "?";
 const fmtNum = n => n ? Number(n).toLocaleString() : "0";
+const copyAddr = addr => { navigator.clipboard.writeText(addr).then(()=>{ const t=document.createElement("div"); t.textContent="已复制 "+addr; t.style.cssText="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00ff88;color:#000;padding:8px 16px;border-radius:6px;font-weight:700;z-index:9999;font-size:13px;"; document.body.appendChild(t); setTimeout(()=>t.remove(),1500); }).catch(()=>{}); };
 const showLoading = () => $("loadingBar").classList.add("active");
 const hideLoading = () => $("loadingBar").classList.remove("active");
 
@@ -346,7 +347,7 @@ function renderTokens() {
     const sm = t.smart_degen_count || 0;
     const kol = t.renowned_count || 0;
     const lp = t.launchpad_platform || t.launchpad || "?";
-    return '<tr><td class="dim">'+(i+1)+'</td><td><span class="tok-sym">'+(t.symbol||"?")+'</span><br><span class="tok-name">'+(t.name||"")+'</span></td><td>$'+Number(t.price||0).toFixed(6)+'</td><td class="'+chgClass+'">'+fmtPct(chg)+'</td><td>'+fmtUSD(t.volume||0)+'</td><td>'+fmtUSD(t.market_cap||0)+'</td><td>'+fmtUSD(t.history_highest_market_cap||0)+'</td><td>'+fmtNum(t.holder_count)+'</td><td>'+(sm>0?'<span class="badge badge-cyan">'+sm+'</span>':'<span class="dim">0</span>')+'</td><td>'+(kol>0?'<span class="badge badge-purple">'+kol+'</span>':'<span class="dim">0</span>')+'</td><td><span class="badge badge-amber">'+lp+'</span></td><td><button class="btn mini" onclick="showTokenDetail(\''+t.address+'\')">查看</button></td></tr>';
+    return '<tr><td class="dim">'+(i+1)+'</td><td><span class="tok-sym">'+(t.symbol||"?")+'</span><br><span class="tok-name copy-addr" title="点击复制地址" onclick="copyAddr(\''+t.address+'\')">'+(t.name||"")+'</span></td><td>$'+Number(t.price||0).toFixed(6)+'</td><td class="'+chgClass+'">'+fmtPct(chg)+'</td><td>'+fmtUSD(t.volume||0)+'</td><td>'+fmtUSD(t.market_cap||0)+'</td><td>'+fmtUSD(t.history_highest_market_cap||0)+'</td><td>'+fmtNum(t.holder_count)+'</td><td>'+(sm>0?'<span class="badge badge-cyan">'+sm+'</span>':'<span class="dim">0</span>')+'</td><td>'+(kol>0?'<span class="badge badge-purple">'+kol+'</span>':'<span class="dim">0</span>')+'</td><td><span class="badge badge-amber">'+lp+'</span></td><td><button class="btn mini" onclick="showTokenDetail(\''+t.address+'\')">查看</button></td></tr>';
   }).join("");
 }
 

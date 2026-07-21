@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="zh" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>罗宾汉聪明钱捕手 · RBSM</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:oklch(13% .012 200);--bg-2:oklch(10% .01 200);
+  --panel:oklch(16% .013 200);--panel-deep:oklch(12% .012 200);
+  --ink:oklch(89% .018 200);--ink-strong:oklch(95% .016 200);
+  --muted:oklch(65% .018 200);--dim:oklch(48% .018 200);
+  --line:oklch(25% .026 200);--line-2:oklch(32% .035 200);
+  --line-green:oklch(46% .10 150 / .55);
+  --acid:oklch(74% .18 150);--acid-2:oklch(82% .16 150);
+  --cyan:oklch(79% .13 220);--amber:oklch(82% .15 82);
+  --orange:oklch(69% .16 52);--purple:oklch(75% .13 305);
+  --red:oklch(72% .16 27);--blue:oklch(72% .12 255);
+  --mono:"JetBrains Mono","IBM Plex Mono",Consolas,monospace;
+  --sans:Inter,"Microsoft YaHei UI","Segoe UI",system-ui,sans-serif;
+  --shadow:0 18px 46px oklch(0% 0 0 / .52);
+}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:oklch(97% .012 200);--bg-2:oklch(94% .014 200);
+  --panel:oklch(99% .006 200);--panel-deep:oklch(95% .012 200);
+  --ink:oklch(25% .018 200);--ink-strong:oklch(14% .018 200);
+  --muted:oklch(46% .018 200);--dim:oklch(61% .018 200);
+  --line:oklch(84% .026 200);--line-2:oklch(76% .035 200);
+  --line-green:oklch(70% .10 150 / .55);
+  --acid:oklch(50% .17 150);--acid-2:oklch(42% .15 150);
+  --cyan:oklch(49% .13 220);--amber:oklch(58% .15 82);
+  --orange:oklch(58% .16 52);--purple:oklch(55% .13 305);
+  --red:oklch(55% .16 27);--blue:oklch(50% .12 255);
+  --shadow:0 18px 44px oklch(45% .035 200 / .16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{color:var(--ink);font-family:var(--sans);
+  background:radial-gradient(circle at 8% -6%,oklch(65% .15 150 / .10),transparent 34rem),
+    linear-gradient(90deg,oklch(100% 0 0 / .035) 1px,transparent 1px),
+    linear-gradient(0deg,oklch(100% 0 0 / .028) 1px,transparent 1px),var(--bg);
+  background-size:auto,80px 80px,80px 80px,auto;padding:0 28px 74px}
+body:after{content:"SMART MONEY \u25cf ROBINHOOD CHAIN \u25cf TOP TRADERS \u25cf EARLY BUYERS \u25cf LIVE";
+  position:fixed;left:0;right:0;bottom:0;z-index:20;height:46px;
+  display:flex;align-items:center;padding:0 28px;border-top:1px solid var(--line);
+  background:oklch(8% .01 200 / .96);color:var(--acid);
+  font-family:var(--mono);font-size:13px;font-weight:900;letter-spacing:.24em;
+  box-shadow:0 -18px 40px oklch(0% 0 0 / .45);overflow:hidden;white-space:nowrap}
+a{color:var(--cyan);text-decoration:none}a:hover{color:var(--ink-strong)}
+.app-shell{max-width:1480px;margin:0 auto;display:grid;gap:24px}
+.command-bar{min-height:118px;display:flex;align-items:center;justify-content:space-between;gap:22px;
+  padding:24px 12px 22px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,oklch(11% .012 200 / .98),oklch(10% .012 200 / .86));
+  position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);flex-wrap:wrap}
+.command-bar:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--acid),transparent);opacity:.28}
+.brand-block{display:flex;align-items:center;gap:22px;min-width:0;flex:1 1 460px}
+.brand-mark{padding:0 4px;color:var(--acid);font-family:var(--mono);font-size:0;line-height:.82;
+  font-weight:950;letter-spacing:-.18em;text-shadow:0 0 18px oklch(74% .18 150 / .28);text-decoration:none;display:inline-block}
+.brand-mark::before{content:"RBSM";font-size:52px;letter-spacing:-.04em}
+.brand-mark::after{content:"monitor";margin-left:10px;font-size:40px;letter-spacing:-.06em;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--acid);font-weight:900;text-transform:uppercase}
+h1{margin:8px 0 7px;font-size:32px;line-height:1;color:var(--ink-strong);letter-spacing:-.04em}
+p{color:var(--muted);line-height:1.5;font-size:14px}
+.info-card{width:min(380px,32vw);border:1px solid oklch(72% .16 150 / .45);
+  background:linear-gradient(90deg,oklch(28% .10 150 / .34),oklch(16% .04 150 / .26));
+  color:var(--acid-2);padding:14px 16px;box-shadow:var(--shadow)}
+.info-card strong{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--acid);margin-bottom:6px;text-transform:uppercase}
+.info-card .info-line{color:var(--ink-strong);font-family:var(--mono);font-size:13px;line-height:1.6;display:flex;flex-wrap:wrap;gap:4px 14px}
+.info-card .info-line b{color:var(--acid);font-weight:900;margin-right:4px}
+.btn{border:1px solid var(--line-green);border-radius:0;background:oklch(18% .035 150 / .44);
+  color:oklch(88% .04 150);padding:10px 16px;font-family:var(--mono);font-weight:900;letter-spacing:.04em;
+  cursor:pointer;box-shadow:inset 0 1px 0 oklch(100% 0 0 / .055),0 6px 16px oklch(0% 0 0 / .24);
+  transition:transform .16s,border-color .16s,background .16s,color .16s}
+.btn:hover{transform:translateY(-1px);border-color:var(--cyan);color:var(--ink-strong)}
+.btn.primary{border-color:oklch(72% .16 150 / .62);background:oklch(37% .13 150 / .86);color:oklch(10% .01 200)}
+.btn.mini{padding:6px 9px;font-size:12px;box-shadow:none}
+.top-actions{align-self:flex-start;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.panel{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--panel-deep));overflow:hidden}
+.panel-head{padding:18px 20px 16px;border-bottom:1px solid var(--line)}
+.panel-head .eyebrow{font-size:11px;margin-bottom:4px;display:block}
+.panel-head h2{font-size:22px;color:var(--ink-strong);letter-spacing:-.03em}
+.panel-head p{font-size:13px;margin-top:4px}
+.module-tabs{display:flex;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);background:oklch(8% .01 200 / .38);overflow:auto}
+.module-tab{flex:0 0 auto;border:1px solid var(--line-green);border-radius:0;background:oklch(17% .032 150 / .36);
+  color:oklch(84% .04 150);padding:10px 16px;font-family:var(--mono);font-size:13px;font-weight:900;letter-spacing:.06em;cursor:pointer;white-space:nowrap}
+.module-tab:hover{border-color:var(--cyan);color:var(--ink-strong)}
+.module-tab.active{border-color:oklch(72% .16 150 / .68);background:oklch(36% .12 150 / .86);color:oklch(10% .01 200)}
+.module-pane[hidden]{display:none!important}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--line)}
+.stat-card{background:var(--panel);padding:20px;display:flex;flex-direction:column;gap:6px}
+.stat-label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.stat-value{font-family:var(--mono);font-size:32px;font-weight:900;color:var(--acid);line-height:1}
+.stat-sub{font-size:12px;color:var(--dim)}
+.filter-row{display:flex;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center}
+.filter-row input,.filter-row select{background:var(--bg-2);border:1px solid var(--line-2);color:var(--ink);
+  padding:8px 12px;font-family:var(--mono);font-size:13px;outline:none}
+.filter-row input:focus,.filter-row select:focus{border-color:var(--acid)}
+.filter-row input{flex:1;min-width:180px}
+.filter-tail{display:flex;gap:8px;margin-left:auto}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
+thead{background:oklch(8% .01 200 / .5)}
+th{padding:12px 14px;text-align:left;font-weight:900;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;font-size:11px;white-space:nowrap;border-bottom:1px solid var(--line)}
+td{padding:10px 14px;border-bottom:1px solid oklch(25% .02 200 / .5);white-space:nowrap;color:var(--ink)}
+tbody tr:hover{background:oklch(20% .02 150 / .12)}
+.tok-sym{font-weight:900;color:var(--ink-strong)}.tok-name{color:var(--muted);font-size:12px}
+.badge{display:inline-block;padding:2px 8px;font-size:11px;font-weight:900;letter-spacing:.04em;border:1px solid}
+.badge-cyan{border-color:var(--cyan);color:var(--cyan)}.badge-purple{border-color:var(--purple);color:var(--purple)}
+.badge-green{border-color:var(--acid);color:var(--acid)}.badge-red{border-color:var(--red);color:var(--red)}
+.badge-amber{border-color:var(--amber);color:var(--amber)}.badge-orange{border-color:var(--orange);color:var(--orange)}
+.pos{color:var(--acid)}.neg{color:var(--red)}.dim{color:var(--dim)}
+.modal-overlay{position:fixed;inset:0;z-index:100;background:oklch(0% 0 0 / .7);display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.modal-overlay.active{display:flex}
+.modal{background:linear-gradient(180deg,var(--panel),var(--panel-deep));border:1px solid var(--line-2);max-width:900px;width:100%;box-shadow:var(--shadow)}
+.modal-head{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{font-size:20px;color:var(--ink-strong)}
+.modal-close{background:none;border:1px solid var(--line-2);color:var(--muted);width:36px;height:36px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--red);border-color:var(--red)}
+.modal-body{padding:20px;max-height:70vh;overflow-y:auto}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--line-2);border-top-color:var(--acid);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{padding:40px;text-align:center;color:var(--dim);font-family:var(--mono);font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px}
+.loading-bar{height:2px;background:var(--line);overflow:hidden;display:none}
+.loading-bar.active{display:block}
+.loading-bar::after{content:"";display:block;height:100%;width:40%;background:var(--acid);animation:slide 1.2s ease-in-out infinite}
+@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
+.section-title{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.api-key-bar{padding:14px 20px;border-bottom:1px solid var(--line);background:oklch(20% .06 150 / .15);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.api-key-bar input{flex:1;min-width:200px;background:var(--bg-2);border:1px solid var(--line-2);color:var(--ink);padding:8px 12px;font-family:var(--mono);font-size:13px;outline:none}
+.api-key-bar input:focus{border-color:var(--acid)}
+.api-key-status{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.api-key-status.set{color:var(--acid)}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="command-bar">
+    <div class="brand-block">
+      <a class="brand-mark" href="#"></a>
+      <div>
+        <div class="eyebrow">SMART MONEY &middot; ROBINHOOD CHAIN &middot; LIVE</div>
+        <h1>罗宾汉聪明钱捕手</h1>
+        <p>ArrowPad &middot; Noxa &middot; Virtuals &middot; Pons &middot; 任何币峰值到过 $1M 即进 watch list &middot; top trader 实时刷新</p>
+      </div>
+    </div>
+    <div class="info-card">
+      <strong>LIVE TALLY</strong>
+      <div class="info-line" id="infoLine"><span class="spinner"></span> 等待 API Key…</div>
+    </div>
+    <div class="top-actions">
+      <button id="themeToggle" class="btn mini" type="button">&#9728; 亮色</button>
+      <button id="refreshBtn" class="btn mini primary" type="button">&#8635; 刷新</button>
+    </div>
+  </header>
+
+  <div class="loading-bar" id="loadingBar"></div>
+
+  <div class="api-key-bar">
+    <span class="api-key-status" id="apiKeyStatus">未设置</span>
+    <input type="password" id="apiKeyInput" placeholder="输入 GMGN API Key (gmgn_xxx)">
+    <button id="saveApiKeyBtn" class="btn mini primary" type="button">保存</button>
+    <span style="font-size:12px;color:var(--dim);font-family:var(--mono)">Key 存储在浏览器 localStorage，不上传任何服务器</span>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <span class="eyebrow">01 &middot; REALTIME STATS</span>
+      <h2>实时统计</h2>
+      <p>当前快照 &middot; 代币 / 钱包 / 交易量累计</p>
+    </div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><span class="stat-label">监控代币</span><span class="stat-value" id="statTokens">--</span><span class="stat-sub">peak MC >= $1M</span></div>
+      <div class="stat-card"><span class="stat-label">聪明钱钱包</span><span class="stat-value" id="statWallets">--</span><span class="stat-sub">已分类</span></div>
+      <div class="stat-card"><span class="stat-label">24h 交易额</span><span class="stat-value" id="statVolume">--</span><span class="stat-sub">USD</span></div>
+      <div class="stat-card"><span class="stat-label">平均胜率</span><span class="stat-value" id="statWinRate">--</span><span class="stat-sub">已盈利钱包占比</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="module-tabs" role="tablist">
+      <button class="module-tab active" data-tab="tokens" type="button">热点代币</button>
+      <button class="module-tab" data-tab="wallets" type="button">聪明钱钱包</button>
+    </div>
+    <div class="module-pane" id="paneTokens">
+      <div class="filter-row">
+        <input type="search" id="tokenSearch" placeholder="搜索代币 / symbol">
+        <select id="tokenSort">
+          <option value="market_cap">按市值</option>
+          <option value="volume">按交易额</option>
+          <option value="history_highest_market_cap">按峰值MC</option>
+          <option value="holder_count">按持有人数</option>
+          <option value="price_change_percent">按24h涨幅</option>
+          <option value="smart_degen_count">按聪明钱数</option>
+        </select>
+        <div class="filter-tail">
+          <button id="loadTokensBtn" class="btn mini primary" type="button">加载代币</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="tokenTable">
+          <thead><tr><th>#</th><th>代币</th><th>价格</th><th>24h%</th><th>交易额</th><th>市值</th><th>峰值MC</th><th>持有人</th><th>聪明钱</th><th>KOL</th><th>发射台</th><th>操作</th></tr></thead>
+          <tbody id="tokenBody"><tr><td colspan="12"><div class="empty">点击「加载代币」开始</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="module-pane" id="paneWallets" hidden>
+      <div class="filter-row">
+        <input type="search" id="walletSearch" placeholder="搜索钱包地址">
+        <select id="walletCategory">
+          <option value="">全部分类</option>
+          <option value="早期建仓">早期建仓</option>
+          <option value="离场赢家">离场赢家</option>
+          <option value="当前持仓">当前持仓</option>
+          <option value="当前盈利">当前盈利</option>
+        </select>
+        <div class="filter-tail">
+          <button id="loadWalletsBtn" class="btn mini primary" type="button">聚合聪明钱</button>
+          <button id="exportCsvBtn" class="btn mini" type="button">导出CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="walletTable">
+          <thead><tr><th>#</th><th>钱包地址</th><th>分类</th><th>代币数</th><th>总盈利</th><th>已实现</th><th>未实现</th><th>胜率</th><th>最佳代币</th><th>买TX</th><th>卖TX</th><th>操作</th></tr></thead>
+          <tbody id="walletBody"><tr><td colspan="12"><div class="empty">点击「聚合聪明钱」开始</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal-overlay" id="tokenModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="tokenModalTitle">代币详情</h3><button class="modal-close" onclick="closeModal('tokenModal')">X</button></div>
+    <div class="modal-body" id="tokenModalBody"></div>
+  </div>
+</div>
+<div class="modal-overlay" id="walletModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="walletModalTitle">钱包详情</h3><button class="modal-close" onclick="closeModal('walletModal')">X</button></div>
+    <div class="modal-body" id="walletModalBody"></div>
+  </div>
+</div>
+
+<script>
+
+// ─── State ───
+let allTokens = [];
+let allWallets = [];
+const API_HOST = "https://openapi.gmgn.ai";
+let API_KEY = localStorage.getItem("gmgn_api_key") || "";
+
+// ─── Utils ───
+const $ = id => document.getElementById(id);
+const fmtUSD = n => {
+  if (!n || n === 0) return "$0";
+  const a = Math.abs(n);
+  if (a >= 1e9) return "$" + (n/1e9).toFixed(2) + "B";
+  if (a >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
+  if (a >= 1e3) return "$" + (n/1e3).toFixed(1) + "K";
+  return "$" + n.toFixed(4);
+};
+const fmtPct = n => { if (n===null||n===undefined) return "--"; return (n>=0?"+":"")+n.toFixed(2)+"%"; };
+const fmtAddr = a => a ? a.slice(0,8)+"..."+a.slice(-6) : "?";
+const fmtNum = n => n ? Number(n).toLocaleString() : "0";
+const showLoading = () => $("loadingBar").classList.add("active");
+const hideLoading = () => $("loadingBar").classList.remove("active");
+
+// ─── API ───
+async function gmgnGet(path, params={}) {
+  if (!API_KEY) throw new Error("请先设置 GMGN API Key");
+  const ts = Math.floor(Date.now()/1000);
+  const url = new URL(API_HOST + path);
+  url.searchParams.set("chain","robinhood");
+  url.searchParams.set("timestamp", ts);
+  url.searchParams.set("client_id", "rbsm_web");
+  for (const [k,v] of Object.entries(params)) {
+    if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
+  }
+  const r = await fetch(url, { headers: { "X-APIKEY": API_KEY, "Content-Type": "application/json" } });
+  if (!r.ok) {
+    const txt = await r.text();
+    throw new Error("API " + r.status + ": " + txt.slice(0,200));
+  }
+  return r.json();
+}
+
+// ─── API Key ───
+function updateApiKeyStatus() {
+  if (API_KEY) {
+    $("apiKeyStatus").textContent = "已设置 (" + API_KEY.slice(0,8) + "...)";
+    $("apiKeyStatus").classList.add("set");
+    $("apiKeyInput").value = "";
+  } else {
+    $("apiKeyStatus").textContent = "未设置";
+    $("apiKeyStatus").classList.remove("set");
+  }
+}
+$("saveApiKeyBtn").onclick = () => {
+  const v = $("apiKeyInput").value.trim();
+  if (!v) { alert("请输入 API Key"); return; }
+  API_KEY = v;
+  localStorage.setItem("gmgn_api_key", v);
+  updateApiKeyStatus();
+  loadStats();
+};
+
+// ─── Stats ───
+async function loadStats() {
+  if (!API_KEY) return;
+  try {
+    const data = await gmgnGet("/v1/market/rank", { interval: "24h", limit: 100 });
+    const tokens = data?.data?.rank || [];
+    const over1m = tokens.filter(t => (t.history_highest_market_cap||0) >= 1e6);
+    const totalVol = tokens.reduce((s,t) => s + (t.volume||0), 0);
+    $("statTokens").textContent = over1m.length;
+    $("statVolume").textContent = fmtUSD(totalVol);
+    $("infoLine").innerHTML = "<b>代币</b>"+tokens.length+" <b>>=$1M</b>"+over1m.length+" <b>24h额</b>"+fmtUSD(totalVol);
+  } catch(e) {
+    $("infoLine").textContent = "加载失败: " + e.message;
+  }
+}
+
+// ─── Tokens ───
+async function loadTokens() {
+  if (!API_KEY) { alert("请先设置 GMGN API Key"); return; }
+  showLoading();
+  try {
+    const data = await gmgnGet("/v1/market/rank", { interval: "24h", limit: 100 });
+    allTokens = data?.data?.rank || [];
+    renderTokens();
+  } catch(e) {
+    $("tokenBody").innerHTML = '<tr><td colspan="12"><div class="empty">加载失败: '+e.message+'</div></td></tr>';
+  }
+  hideLoading();
+}
+
+function renderTokens() {
+  const search = $("tokenSearch").value.toLowerCase();
+  const sortKey = $("tokenSort").value;
+  let tokens = [...allTokens];
+  if (search) tokens = tokens.filter(t => (t.symbol||"").toLowerCase().includes(search) || (t.name||"").toLowerCase().includes(search));
+  tokens.sort((a,b) => (b[sortKey]||0) - (a[sortKey]||0));
+  if (!tokens.length) { $("tokenBody").innerHTML = '<tr><td colspan="12"><div class="empty">无数据</div></td></tr>'; return; }
+  $("tokenBody").innerHTML = tokens.map((t,i) => {
+    const chg = t.price_change_percent || 0;
+    const chgClass = chg >= 0 ? "pos" : "neg";
+    const sm = t.smart_degen_count || 0;
+    const kol = t.renowned_count || 0;
+    const lp = t.launchpad_platform || t.launchpad || "?";
+    return '<tr><td class="dim">'+(i+1)+'</td><td><span class="tok-sym">'+(t.symbol||"?")+'</span><br><span class="tok-name">'+(t.name||"")+'</span></td><td>$'+(t.price||0).toFixed(6)+'</td><td class="'+chgClass+'">'+fmtPct(chg)+'</td><td>'+fmtUSD(t.volume||0)+'</td><td>'+fmtUSD(t.market_cap||0)+'</td><td>'+fmtUSD(t.history_highest_market_cap||0)+'</td><td>'+fmtNum(t.holder_count)+'</td><td>'+(sm>0?'<span class="badge badge-cyan">'+sm+'</span>':'<span class="dim">0</span>')+'</td><td>'+(kol>0?'<span class="badge badge-purple">'+kol+'</span>':'<span class="dim">0</span>')+'</td><td><span class="badge badge-amber">'+lp+'</span></td><td><button class="btn mini" onclick="showTokenDetail(\''+t.address+'\')">查看</button></td></tr>';
+  }).join("");
+}
+
+// ─── Token Detail ───
+async function showTokenDetail(addr) {
+  $("tokenModal").classList.add("active");
+  $("tokenModalBody").innerHTML = '<div class="empty"><span class="spinner"></span> 加载中…</div>';
+  try {
+    const [infoRes, secRes, tradersRes, holdersRes] = await Promise.all([
+      gmgnGet("/v1/token/info", { address: addr }),
+      gmgnGet("/v1/token/security", { address: addr }),
+      gmgnGet("/v1/market/token_top_traders", { address: addr, limit: 20, order_by: "profit", direction: "desc" }),
+      gmgnGet("/v1/market/token_top_holders", { address: addr, limit: 20, tag: "smart_degen", order_by: "amount_percentage", direction: "desc" })
+    ]);
+    const info = infoRes?.data || {};
+    const sec = secRes?.data || {};
+    const traders = tradersRes?.data?.list || tradersRes?.list || [];
+    const holders = holdersRes?.data?.rank || holdersRes?.rank || holdersRes?.data?.list || [];
+    $("tokenModalTitle").textContent = (info.symbol || "?") + " · 代币详情";
+    let html = '<div class="section-title">基本信息</div>';
+    html += '<table><tbody><tr><td>名称</td><td>'+(info.name||"?")+'</td><td>价格</td><td>$'+(info.price||0).toFixed(8)+'</td></tr><tr><td>市值</td><td>'+fmtUSD(info.market_cap||0)+'</td><td>流动性</td><td>'+fmtUSD(info.liquidity||0)+'</td></tr><tr><td>持有人</td><td>'+fmtNum(info.holder_count)+'</td><td>24h交易额</td><td>'+fmtUSD(info.volume||0)+'</td></tr></tbody></table>';
+    html += '<div class="section-title">安全检查</div>';
+    const hp = sec.is_honeypot;
+    const rn = sec.is_renounced || sec.owner_renounced;
+    html += '<table><tbody><tr><td>蜜罐检测</td><td>'+(hp===0||hp==="no"?'<span class="badge badge-green">SAFE</span>':'<span class="badge badge-red">DANGER</span>')+'</td><td>已放弃权限</td><td>'+(rn===1||rn==="yes"||rn===true?'<span class="badge badge-green">YES</span>':'<span class="badge badge-red">NO</span>')+'</td></tr><tr><td>买入税</td><td>'+(sec.buy_tax??"?")+'</td><td>卖出税</td><td>'+(sec.sell_tax??"?")+'</td></tr><tr><td>锁定比例</td><td>'+((sec.lock_percent||0)*100).toFixed(1)+'%</td><td>开源</td><td>'+(sec.is_open_source===1||sec.open_source==="yes"?'<span class="badge badge-green">YES</span>':'<span class="badge badge-red">NO</span>')+'</td></tr></tbody></table>';
+    html += '<div class="section-title">Top Traders (按盈利)</div>';
+    if (traders.length) {
+      html += '<div class="table-wrap"><table><thead><tr><th>地址</th><th>盈利</th><th>已实现</th><th>未实现</th><th>买入额</th><th>卖出额</th><th>占比</th><th>买TX</th><th>卖TX</th><th>标签</th></tr></thead><tbody>';
+      traders.forEach(t => {
+        const prof = t.profit || 0;
+        html += '<tr><td><a href="#" onclick="showWalletDetail(\''+t.address+'\');return false">'+fmtAddr(t.address)+'</a></td><td class="'+(prof>=0?'pos':'neg')+'">'+fmtUSD(prof)+'</td><td>'+fmtUSD(t.realized_profit||0)+'</td><td>'+fmtUSD(t.unrealized_profit||0)+'</td><td>'+fmtUSD(t.buy_volume_cur||0)+'</td><td>'+fmtUSD(t.sell_volume_cur||0)+'</td><td>'+((t.amount_percentage||0)*100).toFixed(2)+'%</td><td>'+(t.buy_tx_count_cur||0)+'</td><td>'+(t.sell_tx_count_cur||0)+'</td><td>'+(t.wallet_tag_v2?'<span class="badge badge-cyan">'+t.wallet_tag_v2+'</span>':'')+'</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    } else { html += '<div class="empty">无交易者数据</div>'; }
+    html += '<div class="section-title">Smart Money 持仓</div>';
+    if (holders.length) {
+      html += '<div class="table-wrap"><table><thead><tr><th>地址</th><th>占比</th><th>盈利</th><th>未实现</th><th>买入额</th><th>卖出额</th></tr></thead><tbody>';
+      holders.forEach(t => {
+        const prof = t.profit || 0;
+        html += '<tr><td><a href="#" onclick="showWalletDetail(\''+t.address+'\');return false">'+fmtAddr(t.address)+'</a></td><td>'+((t.amount_percentage||0)*100).toFixed(2)+'%</td><td class="'+(prof>=0?'pos':'neg')+'">'+fmtUSD(prof)+'</td><td>'+fmtUSD(t.unrealized_profit||0)+'</td><td>'+fmtUSD(t.buy_volume_cur||0)+'</td><td>'+fmtUSD(t.sell_volume_cur||0)+'</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    } else { html += '<div class="empty">无 Smart Money 持仓</div>'; }
+    $("tokenModalBody").innerHTML = html;
+  } catch(e) {
+    $("tokenModalBody").innerHTML = '<div class="empty">加载失败: '+e.message+'</div>';
+  }
+}
+
+// ─── Smart Wallets ───
+async function loadSmartWallets() {
+  if (!API_KEY) { alert("请先设置 GMGN API Key"); return; }
+  showLoading();
+  try {
+    const data = await gmgnGet("/v1/market/rank", { interval: "24h", limit: 30 });
+    const tokens = (data?.data?.rank || []).filter(t => (t.history_highest_market_cap||0) >= 1e6);
+    const smartWallets = {};
+    for (const token of tokens.slice(0, 20)) {
+      try {
+        const tdata = await gmgnGet("/v1/market/token_top_traders", { address: token.address, limit: 10, order_by: "profit", direction: "desc" });
+        const traders = tdata?.data?.list || tdata?.list || [];
+        for (const t of traders) {
+          const waddr = t.address;
+          if (!waddr) continue;
+          if (!smartWallets[waddr]) {
+            smartWallets[waddr] = { address: waddr, tokens: [], total_profit: 0, total_realized: 0, total_unrealized: 0, buy_count: 0, sell_count: 0, best_profit: 0, best_token: "" };
+          }
+          const profit = t.profit || 0;
+          smartWallets[waddr].tokens.push({ token_symbol: token.symbol, token_address: token.address, profit, realized_profit: t.realized_profit||0, unrealized_profit: t.unrealized_profit||0, buy_tx: t.buy_tx_count_cur||0, sell_tx: t.sell_tx_count_cur||0, is_holding: t.end_holding_at === null });
+          smartWallets[waddr].total_profit += profit;
+          smartWallets[waddr].total_realized += t.realized_profit||0;
+          smartWallets[waddr].total_unrealized += t.unrealized_profit||0;
+          smartWallets[waddr].buy_count += t.buy_tx_count_cur||0;
+          smartWallets[waddr].sell_count += t.sell_tx_count_cur||0;
+          if (profit > smartWallets[waddr].best_profit) { smartWallets[waddr].best_profit = profit; smartWallets[waddr].best_token = token.symbol; }
+        }
+      } catch(e) { continue; }
+    }
+    const walletList = Object.values(smartWallets);
+    for (const w of walletList) {
+      w.token_count = w.tokens.length;
+      w.win_rate = w.tokens.filter(t => t.profit > 0).length / w.token_count;
+      const active = w.tokens.filter(t => t.is_holding).length;
+      if (active === 0 && w.total_realized > 0) w.category = "离场赢家";
+      else if (active === w.token_count) w.category = "当前持仓";
+      else if (w.total_unrealized > w.total_realized) w.category = "当前盈利";
+      else w.category = "早期建仓";
+    }
+    walletList.sort((a,b) => (b.total_profit||0) - (a.total_profit||0));
+    allWallets = walletList;
+    $("statWallets").textContent = walletList.length;
+    const wr = walletList.length ? Math.round(walletList.filter(w => w.win_rate >= 0.5).length / walletList.length * 100) : 0;
+    $("statWinRate").textContent = wr + "%";
+    renderWallets();
+  } catch(e) {
+    $("walletBody").innerHTML = '<tr><td colspan="12"><div class="empty">加载失败: '+e.message+'</div></td></tr>';
+  }
+  hideLoading();
+}
+
+function renderWallets() {
+  const search = $("walletSearch").value.toLowerCase();
+  const cat = $("walletCategory").value;
+  let wallets = [...allWallets];
+  if (search) wallets = wallets.filter(w => w.address.toLowerCase().includes(search));
+  if (cat) wallets = wallets.filter(w => w.category === cat);
+  wallets.sort((a,b) => (b.total_profit||0) - (a.total_profit||0));
+  if (!wallets.length) { $("walletBody").innerHTML = '<tr><td colspan="12"><div class="empty">无数据</div></td></tr>'; return; }
+  const catBadge = c => { const m = {"早期建仓":"badge-amber","离场赢家":"badge-green","当前持仓":"badge-cyan","当前盈利":"badge-purple"}; return '<span class="badge '+(m[c]||"badge-amber")+'">'+c+'</span>'; };
+  $("walletBody").innerHTML = wallets.map((w,i) => {
+    const prof = w.total_profit || 0;
+    return '<tr><td class="dim">'+(i+1)+'</td><td><a href="#" onclick="showWalletDetail(\''+w.address+'\');return false">'+fmtAddr(w.address)+'</a></td><td>'+catBadge(w.category)+'</td><td>'+(w.token_count||0)+'</td><td class="'+(prof>=0?'pos':'neg')+'">'+fmtUSD(prof)+'</td><td>'+fmtUSD(w.total_realized||0)+'</td><td>'+fmtUSD(w.total_unrealized||0)+'</td><td>'+((w.win_rate||0)*100).toFixed(0)+'%</td><td><span class="tok-sym">'+(w.best_token||"?")+'</span></td><td>'+(w.buy_count||0)+'</td><td>'+(w.sell_count||0)+'</td><td><button class="btn mini" onclick="showWalletDetail(\''+w.address+'\')">查看</button></td></tr>';
+  }).join("");
+}
+
+// ─── Wallet Detail ───
+async function showWalletDetail(addr) {
+  $("walletModal").classList.add("active");
+  $("walletModalBody").innerHTML = '<div class="empty"><span class="spinner"></span> 加载中…</div>';
+  $("walletModalTitle").textContent = fmtAddr(addr) + " · 钱包详情";
+  try {
+    const [statsRes] = await Promise.all([
+      gmgnGet("/v1/user/wallet_stats", { wallet_address: addr, period: "30d" })
+    ]);
+    const stats = statsRes?.data || statsRes;
+    let html = '<div class="section-title">交易统计 (30天)</div>';
+    if (stats) {
+      const pnl = stats.realized_profit || 0;
+      html += '<table><tbody><tr><td>已实现PnL</td><td class="'+(pnl>=0?'pos':'neg')+'">'+fmtUSD(pnl)+'</td><td>胜率</td><td>'+((stats.winrate||0)*100).toFixed(1)+'%</td></tr><tr><td>交易笔数</td><td>'+(stats.items_n||0)+'</td><td>总成本</td><td>'+fmtUSD(stats.total_cost||0)+'</td></tr></tbody></table>';
+    } else { html += '<div class="empty">无统计数据 (wallet_stats 需要 signed auth，浏览器端不支持)</div>'; }
+    $("walletModalBody").innerHTML = html;
+  } catch(e) {
+    $("walletModalBody").innerHTML = '<div class="empty">加载失败: '+e.message+'<br><br>注: 钱包持仓查询需要签名认证，浏览器端不支持。请使用 gmgn-cli 查询完整持仓。</div>';
+  }
+}
+
+// ─── CSV Export ───
+function exportCSV() {
+  if (!allWallets.length) { alert("请先加载聪明钱数据"); return; }
+  const headers = ["address","category","token_count","total_profit","total_realized","total_unrealized","win_rate","best_token","best_profit","buy_count","sell_count"];
+  const rows = [headers.join(",")];
+  allWallets.forEach(w => {
+    rows.push(headers.map(h => {
+      let v = w[h] ?? "";
+      if (h === "win_rate") v = ((v||0)*100).toFixed(1)+"%";
+      return /[,\n]/.test(String(v)) ? '"' + v + '"' : v;
+    }).join(","));
+  });
+  const blob = new Blob([rows.join("\n")], {type:"text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "robinhood_smart_wallets_" + Date.now() + ".csv";
+  a.click();
+}
+
+// ─── Modal ───
+function closeModal(id) { $(id).classList.remove("active"); }
+
+// ─── Theme ───
+$("themeToggle").onclick = () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  const next = cur === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  $("themeToggle").textContent = next === "dark" ? "\u2600 \u4eae\u8272" : "\U0001f319 \u6697\u8272";
+};
+
+// ─── Tabs ───
+document.querySelectorAll(".module-tab").forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll(".module-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    const target = tab.dataset.tab;
+    $("paneTokens").hidden = target !== "tokens";
+    $("paneWallets").hidden = target !== "wallets";
+  };
+});
+
+// ─── Events ───
+$("loadTokensBtn").onclick = loadTokens;
+$("loadWalletsBtn").onclick = loadSmartWallets;
+$("exportCsvBtn").onclick = exportCSV;
+$("refreshBtn").onclick = () => { loadStats(); loadTokens(); };
+$("tokenSearch").oninput = renderTokens;
+$("tokenSort").onchange = renderTokens;
+$("walletSearch").oninput = renderWallets;
+$("walletCategory").onchange = renderWallets;
+document.querySelectorAll(".modal-overlay").forEach(o => {
+  o.onclick = e => { if (e.target === o) o.classList.remove("active"); };
+});
+
+// ─── Init ───
+updateApiKeyStatus();
+if (API_KEY) loadStats();
+
+</script>
+</body>
+</html>
